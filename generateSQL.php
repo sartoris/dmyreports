@@ -15,8 +15,6 @@ function dmyError(){
 
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
-  $theValue = (!get_magic_quotes_gpc()) ? addslashes($theValue) : $theValue;
-
   switch ($theType) {
     case "text":
       $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
@@ -54,15 +52,15 @@ if ($_POST["txtReportName"] != "") {
 			GetSQLValueString($_SESSION['txtRecPerPage'], "text"),
 			GetSQLValueString($_SESSION['selectedFields'], "text"),
 			GetSQLValueString($_SESSION['selectedTables'], "text"));
-		mysql_select_db($database_connSave, $connSave);
-		$Result1 = mysql_query($insertSQL, $connSave) or die(mysql_error());
+		mysqli_select_db($connSave, $database_connSave);
+		$Result1 = mysqli_query($connSave, $insertSQL) or die(mysqli_error());
 	}
 }
 
 // The code to generate the SQL statement
 $tmpSQL = "SELECT ";
 
-$tmpFields = split("~",$_SESSION['selectedFields']);
+$tmpFields = explode("~",$_SESSION['selectedFields']);
 for ($x=0; $x<=count($tmpFields)-1; $x+=1) {
 	if ($tmpFields[$x]!=""){
 		$tmpSQL = $tmpSQL . $tmpFields[$x] . ", ";
@@ -73,7 +71,7 @@ $tmpSQL = substr($tmpSQL, 0, (strlen($tmpSQL)-2) );
 
 $tmpSQL = $tmpSQL . " FROM ";
 
-$tmpTables = split("~",$_SESSION['selectedTables']);
+$tmpTables = explode("~",$_SESSION['selectedTables']);
 for ($x=0; $x<=count($tmpTables)-1; $x+=1) {
 	if ($tmpTables[$x]!=""){
 		$tmpSQL = $tmpSQL . $tmpTables[$x] . ", ";
@@ -85,7 +83,7 @@ $tmpSQL = substr($tmpSQL, 0, (strlen($tmpSQL)-2) );
 if ($_SESSION['appliedConditions']!="")	{
 	$tmpSQL = $tmpSQL . " WHERE ";
 	
-	$tmpCondition = split("~",$_SESSION['appliedConditions']);
+	$tmpCondition = explode("~",$_SESSION['appliedConditions']);
 	for ($x=0; $x<=count($tmpCondition)-1; $x+=1) {
 		if ($tmpCondition[$x]!=""){
 			$tmpSQL = $tmpSQL . stripslashes($tmpCondition[$x]) . " ";
@@ -112,17 +110,17 @@ if (isset($_GET['pageNum_recSQL'])) {
 }
 $startRow_recSQL = $pageNum_recSQL * $maxRows_recSQL;
 
-mysql_select_db($database_connDB, $connDB);
+mysqli_select_db($connDB, $database_connDB);
 $query_recSQL = $tmpSQL;
 $query_limit_recSQL = sprintf("%s LIMIT %d, %d", $query_recSQL, $startRow_recSQL, $maxRows_recSQL);
-$recSQL = mysql_query($query_limit_recSQL, $connDB) or die(dmyError());
-$column_count = mysql_num_fields($recSQL) or die("display_db_query:" . mysql_error());
+$recSQL = mysqli_query($connDB, $query_limit_recSQL) or die(dmyError());
+$column_count = mysqli_num_fields($recSQL) or die("display_db_query:" . mysqli_error());
 
 if (isset($_GET['totalRows_recSQL'])) {
   $totalRows_recSQL = $_GET['totalRows_recSQL'];
 } else {
-  $all_recSQL = mysql_query($query_recSQL);
-  $totalRows_recSQL = mysql_num_rows($all_recSQL);
+  $all_recSQL = mysqli_query($connDB, $query_recSQL);
+  $totalRows_recSQL = mysqli_num_rows($all_recSQL);
 }
 $totalPages_recSQL = ceil($totalRows_recSQL/$maxRows_recSQL)-1;
 
@@ -218,12 +216,12 @@ $queryString_recSQL = sprintf("&totalRows_recSQL=%d%s", $totalRows_recSQL, $quer
 					print("<TABLE width='100%' cellspacing='0' cellpading='0' class='tableReports'> \n");
 					print("<TR ALIGN=LEFT VALIGN=TOP>");
 					for($column_num = 0; $column_num < $column_count; $column_num++) {
-						$field_name = mysql_field_name($recSQL, $column_num);
-						print("<TD class='tableHeader'><b>$field_name</b></TD>");
+						$field_name = mysqli_fetch_field_direct($recSQL, $column_num);
+						print("<TD class='tableHeader'><b>$field_name->name</b></TD>");
 					}
 					print("</TR>\n");
 					
-					$row = mysql_fetch_row($recSQL);
+					$row = mysqli_fetch_row($recSQL);
 					do {
 						print("<TR ALIGN=LEFT VALIGN=TOP>");
 						for($column_num = 0; $column_num < $column_count; $column_num++) {
@@ -236,7 +234,7 @@ $queryString_recSQL = sprintf("&totalRows_recSQL=%d%s", $totalRows_recSQL, $quer
 							print("</TD>\n");
 						}
 						print("</TR>\n");
-					} while ($row = mysql_fetch_row($recSQL)); 
+					} while ($row = mysqli_fetch_row($recSQL));
 					?>
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
@@ -266,5 +264,5 @@ $queryString_recSQL = sprintf("&totalRows_recSQL=%d%s", $totalRows_recSQL, $quer
 </body>
 </html>
 <?php
-mysql_free_result($recSQL);
+mysqli_free_result($recSQL);
 ?>

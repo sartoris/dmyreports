@@ -6,7 +6,7 @@ if ($_POST["inputValue"]=="field"){
 ?>
 <select name="lstFieldNames" id="inputValue">
   <?php
-	$tmpFields = split("~",$_SESSION['selectedFields']);
+	$tmpFields = explode("~",$_SESSION['selectedFields']);
 	for ($x=0; $x<=count($tmpFields)-1; $x+=1) {
 		if ($tmpFields[$x]!=""){
   ?>

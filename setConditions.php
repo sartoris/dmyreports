@@ -286,7 +286,7 @@ function cmdNew_onClick() {
                         </select>                      </td>
                       <td><select name="lstFieldNames" id="lstFieldNames">
                     <?php
-					$tmpFields = split("~",$_SESSION['selectedFields']);
+					$tmpFields = explode("~",$_SESSION['selectedFields']);
 					for ($x=0; $x<=count($tmpFields)-1; $x+=1) {
 						if ($tmpFields[$x]!=""){
 					?>
@@ -332,7 +332,7 @@ function cmdNew_onClick() {
                               <td><select name="lstSortName" id="lstSortName">
                                   <option value=""></option>
                                   <?php
-									$tmpFields = split("~",$_SESSION['selectedFields']);
+									$tmpFields = explode("~",$_SESSION['selectedFields']);
 									for ($x=0; $x<=count($tmpFields)-1; $x+=1) {
 										if ($tmpFields[$x]!=""){
 	  								?>
@@ -374,7 +374,7 @@ function cmdNew_onClick() {
                     <tr>
                       <td height="19" colspan="6" valign="top"><select name="lstAppliedConditions" size="5" multiple="multiple" id="lstAppliedConditions" style="width:650px">
 					<?php
-					$tmpCondition = split("~",$_SESSION['appliedConditions']);
+					$tmpCondition = explode("~",$_SESSION['appliedConditions']);
 					for ($x=0; $x<=count($tmpCondition)-1; $x+=1) {
 						if ($tmpCondition[$x]!=""){
 						?>

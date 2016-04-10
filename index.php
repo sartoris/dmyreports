@@ -18,8 +18,8 @@ $row_recReports = mysqli_fetch_assoc($recReports);
 
 if (isset($_GET['totalRows_recReports'])) {
   $totalRows_recReports = $_GET['totalRows_recReports'];
-} else {
-  $all_recReports = mysqli_query($query_recReports);
+} else { 
+  $all_recReports = mysqli_query($connSave, $query_recReports);
   $totalRows_recReports = mysqli_num_rows($all_recReports);
 }
 $totalPages_recReports = ceil($totalRows_recReports/$maxRows_recReports)-1;
@@ -108,7 +108,7 @@ function cmdDelete_onClick(recID) {
                                 </tr>
                             </table></td>
                           </tr>
-                          <?php } while ($row_recReports = mysql_fetch_assoc($recReports)); ?>
+                          <?php } while ($row_recReports = mysqli_fetch_assoc($recReports)); ?>
                           <tr>
                             <td height="15"><div align="center" class="tableNav">Records <?php echo ($startRow_recReports + 1) ?> to <?php echo min($startRow_recReports + $maxRows_recReports, $totalRows_recReports) ?> of <?php echo $totalRows_recReports ?> </div></td>
                           </tr>
@@ -170,5 +170,5 @@ function cmdDelete_onClick(recID) {
 </body>
 </html>
 <?php
-mysql_free_result($recReports);
+mysqli_free_result($recReports);
 ?>

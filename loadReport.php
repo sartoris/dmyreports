@@ -3,13 +3,13 @@
 <?php
 $colname_recLoad = "-1";
 if (isset($_GET['id'])) {
-  $colname_recLoad = (get_magic_quotes_gpc()) ? $_GET['id'] : addslashes($_GET['id']);
+  $colname_recLoad = $_GET['id'];
 }
-mysql_select_db($database_connSave, $connSave);
+mysqli_select_db($connSave, $database_connSave);
 $query_recLoad = sprintf("SELECT * FROM tblreports WHERE id = %s", $colname_recLoad);
-$recLoad = mysql_query($query_recLoad, $connSave) or die(mysql_error());
-$row_recLoad = mysql_fetch_assoc($recLoad);
-$totalRows_recLoad = mysql_num_rows($recLoad);
+$recLoad = mysqli_query($connSave, $query_recLoad) or die(mysqli_error());
+$row_recLoad = mysqli_fetch_assoc($recLoad);
+$totalRows_recLoad = mysqli_num_rows($recLoad);
 
 $_SESSION['appliedConditions'] = $row_recLoad['appliedConditions'];
 $_SESSION['txtReportName'] = $row_recLoad['txtReportName'];
@@ -21,5 +21,5 @@ $_SESSION['selectedTables'] = $row_recLoad['selectedTables'];
 
 header("Location:generateSQL.php");
 
-mysql_free_result($recLoad);
+mysqli_free_result($recLoad);
 ?>

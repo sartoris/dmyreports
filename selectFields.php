@@ -224,7 +224,7 @@ function cmdNew_onClick() {
               <td height="29" valign="top">
 			  <select name="lstTables" id="lstTables" onChange="doAjax('getFieldNames.php','tableName=' + this.value,'displayFields','post',0,'progress');">
                 <?php
-					$tmpTables = split("~",$_SESSION['selectedTables']);
+					$tmpTables = explode("~",$_SESSION['selectedTables']);
 					for ($x=0; $x<=count($tmpTables)-1; $x+=1) {
 						if ($tmpTables[$x]!=""){
 				?>
@@ -245,7 +245,7 @@ function cmdNew_onClick() {
                   <tr>
                     <td width="270"><select name="lstSelectedFields" size="5" multiple="multiple" id="lstSelectedFields" style="width:270px">
 					<?php
-						$tmpFields = split("~",$_SESSION['selectedFields']);
+						$tmpFields = explode("~",$_SESSION['selectedFields']);
 						for ($x=0; $x<=count($tmpFields)-1; $x+=1) {
 							if ($tmpFields[$x]!=""){
 	  				?>

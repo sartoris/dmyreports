@@ -5,26 +5,26 @@ function dmyError() {
 	print "Table Not Found.";
 }
 
-mysql_select_db($database_connDB, $connDB);
+mysqli_select_db($connDB, $database_connDB);
 $query_recGetFields = "SHOW columns FROM " . $_POST["tableName"];
-$recGetFields = mysql_query($query_recGetFields, $connDB) or die(dmyError());
-$row_recGetFields = mysql_fetch_array($recGetFields);
-$totalRows_recGetFields = mysql_num_rows($recGetFields);
+$recGetFields = mysqli_query($connDB, $query_recGetFields) or die(dmyError());
+$row_recGetFields = mysqli_fetch_array($recGetFields);
+$totalRows_recGetFields = mysqli_num_rows($recGetFields);
 ?>
 <select name="lstAllFields" size="10" multiple id="lstAllFields" style="width:100%">
 	<?php do {  ?>
 	<option value="<?php echo ($_POST["tableName"] . ".`" . $row_recGetFields[0]) . "`"?>"><?php echo $row_recGetFields[0]?></option>
 	<?php
-		} while ($row_recGetFields = mysql_fetch_array($recGetFields));
-	  		$rows = mysql_num_rows($recGetFields);
+		} while ($row_recGetFields = mysqli_fetch_array($recGetFields));
+	  		$rows = mysqli_num_rows($recGetFields);
 	 		if($rows > 0) {
-		  		mysql_data_seek($recGetFields, 0);
-		  		$row_recGetFields = mysql_fetch_array($recGetFields);
+		  		mysqli_data_seek($recGetFields, 0);
+		  		$row_recGetFields = mysqli_fetch_array($recGetFields);
 			}
 		?>
 </select>
 <input name="cmdSelectFields" type="button" id="cmdSelectFields" value="Add Field" class="button" style="width:100%" onclick="cmdSelectFields_onclick();">
 <?php
-mysql_free_result($recGetFields);
+mysqli_free_result($recGetFields);
 ?>
 

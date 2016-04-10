@@ -3,7 +3,7 @@ session_start();
 ?>
 <?php require_once('includes/config.php'); ?>
 <?php
-	$visTables =  split(",",$dbVisTables);
+	$visTables =  explode(",",$dbVisTables);
 	if (count($visTables)==1) {
 		if ($visTables[0]!=""){
 			$_SESSION['selectedTables'] = "`" . $visTables[0] . "`";
@@ -12,11 +12,11 @@ session_start();
 	}
 ?>
 <?php
-mysql_select_db($database_connDB, $connDB);
+mysqli_select_db($connDB, $database_connDB);
 $query_recGetTables = "SHOW TABLES";
-$recGetTables = mysql_query($query_recGetTables, $connDB) or die(mysql_error());
-$row_recGetTables = mysql_fetch_array($recGetTables);
-$totalRows_recGetTables = mysql_num_rows($recGetTables);
+$recGetTables = mysqli_query($connDB, $query_recGetTables) or die(mysqli_error());
+$row_recGetTables = mysqli_fetch_array($recGetTables);
+$totalRows_recGetTables = mysqli_num_rows($recGetTables);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -162,7 +162,7 @@ function jumpURL(tmpURL) {
                     <?php
 					do { 
 						if ($dbVisTables!=""){
-							$visTables =  split(",",$dbVisTables);
+							$visTables =  explode(",",$dbVisTables);
 							for ($x=0; $x<=count($visTables)-1; $x+=1) {
 								if ($row_recGetTables[0]==trim($visTables[$x])) {
 					?>
@@ -175,11 +175,11 @@ function jumpURL(tmpURL) {
                           <option value="<?php echo "`".$row_recGetTables[0]."`" ?>"><?php echo $row_recGetTables[0]?></option>
                           <?php
 						}
-					} while ($row_recGetTables = mysql_fetch_array($recGetTables));
-					$rows = mysql_num_rows($recGetTables);
+					} while ($row_recGetTables = mysqli_fetch_array($recGetTables));
+					$rows = mysqli_num_rows($recGetTables);
 				  	if($rows > 0) {
-						mysql_data_seek($recGetTables, 0);
-						$row_recGetTables = mysql_fetch_array($recGetTables);
+						mysqli_data_seek($recGetTables, 0);
+						$row_recGetTables = mysqli_fetch_array($recGetTables);
 					}
 					?>
                       </select></td>
@@ -193,7 +193,7 @@ function jumpURL(tmpURL) {
                       </table></td>
                       <td><select name="lstTables" size="10" multiple id="lstTables" style="width:150px;">
                         <?php
-							$tmpTables = split("~",$_SESSION['selectedTables']);
+							$tmpTables = explode("~",$_SESSION['selectedTables']);
 							for ($x=0; $x<=count($tmpTables)-1; $x+=1) {
 								if ($tmpTables[$x]!=""){
 						?>
@@ -241,5 +241,5 @@ function jumpURL(tmpURL) {
 </body>
 </html>
 <?php
-mysql_free_result($recGetTables);
+mysqli_free_result($recGetTables);
 ?>

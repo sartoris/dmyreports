@@ -18,6 +18,6 @@ $username_connSave = "jayhar_su";		// Username to login to the server
 $password_connSave = "nPe^vk^^-{ge";		// Password to the MySQL server
 
 //Do not edit after this point
-$connDB = mysqli_connect($hostname_connDB, $username_connDB, $password_connDB) or trigger_error(mysql_error(),E_USER_ERROR); 
-$connSave = mysqli_connect($hostname_connSave, $username_connSave, $password_connSave) or trigger_error(mysql_error(),E_USER_ERROR); 
+$connDB = mysqli_connect($hostname_connDB, $username_connDB, $password_connDB) or trigger_error(mysqli_error(),E_USER_ERROR);
+$connSave = mysqli_connect($hostname_connSave, $username_connSave, $password_connSave) or trigger_error(mysqli_error(),E_USER_ERROR);
 ?>
