@@ -40,6 +40,25 @@ CREATE TABLE `tblreports` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Table structure for table `User`
+--
+
+CREATE TABLE `User` (
+  `ID` int(11) NOT NULL,
+  `LoginId` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Password` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Type` enum('User','Admin') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'User',
+ 	`Token` varchar(255) NULL,
+  `ResetAttempts` TINYINT NOT NULL DEFAULT '0',
+  `CreatedBy` int(11) NOT NULL,
+  `CreatedOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifiedBy` int(11) NOT NULL,
+  `ModifiedOn` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
 -- Dumping data for table `dmyreports`.`tblreports`
 --
 
